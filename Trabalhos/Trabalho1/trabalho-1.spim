@@ -1,0 +1,172 @@
+.data
+	prompt: .asciiz "(Escolha um número menor que 255)\n"
+	quebra_linha: .asciiz "\n"
+	
+	valor_soma: .asciiz "ADD: "
+	valor_subtracao: .asciiz "SUB: "
+	valor_and: .asciiz "AND: "
+	valor_or: .asciiz "OR: "
+	valor_xor: .asciiz "XOR: "
+	valor_desl_3bits_esquerda_primeiroInput: .asciiz "SLL(3): "
+	valor_desl_1bit_direita_segundoInput: .asciiz "SLL(1): "
+	
+	
+.text
+
+	main:
+		jal while_primeiro_inputUser
+		
+	while_primeiro_inputUser:
+		
+		li $v0, 5
+		syscall
+		move $t0, $v0
+		
+		blt $t0, 255, while_segundo_inputUser
+		j while_primeiro_inputUser
+	
+	while_segundo_inputUser:
+		
+		li $v0, 5
+		syscall
+		move $t1, $v0
+		
+		blt $t1, 255, print_add
+		j while_segundo_inputUser
+	
+	print_add:
+		add $t2, $t0, $t1
+		
+		
+		li $v0, 4
+		la $a0, valor_soma
+		syscall
+		
+		li $v0, 1
+		move $a0, $t2
+		syscall
+		
+		li $v0, 4
+		la $a0, quebra_linha
+		syscall
+		
+		jal print_sub
+		
+	print_sub:
+		sub $t2, $t0, $t1
+		
+		
+		li $v0, 4
+		la $a0, valor_subtracao
+		syscall
+		
+		li $v0, 1
+		move $a0, $t2
+		syscall
+		
+		li $v0, 4
+		la $a0, quebra_linha
+		syscall
+		
+		jal print_and
+		
+	print_and:
+		and $t2, $t0, $t1
+		
+		
+		li $v0, 4
+		la $a0, valor_and
+		syscall
+		
+		li $v0, 1
+		move $a0, $t2
+		syscall
+		
+		li $v0, 4
+		la $a0, quebra_linha
+		syscall
+		
+		jal print_or
+		
+		
+	print_or:
+		or $t2, $t0, $t1
+		
+		
+		li $v0, 4
+		la $a0, valor_or
+		syscall
+		
+		li $v0, 1
+		move $a0, $t2
+		syscall
+		
+		li $v0, 4
+		la $a0, quebra_linha
+		syscall
+		
+		jal print_xor
+		
+		
+	print_xor:
+		
+		xor $t2, $t0, $t1
+		
+		
+		li $v0, 4
+		la $a0, valor_xor
+		syscall
+		
+		li $v0, 1
+		move $a0, $t2
+		syscall
+		
+		li $v0, 4
+		la $a0, quebra_linha
+		syscall
+		
+		jal print_desl_3bits_esquerda_primeiroInput
+		
+		
+	print_desl_3bits_esquerda_primeiroInput:
+		
+		sll $t2, $t0, 3
+			
+		li $v0, 4
+		la $a0, valor_desl_3bits_esquerda_primeiroInput
+		syscall
+		
+		li $v0, 1
+		move $a0, $t2
+		syscall
+		
+		li $v0, 4
+		la $a0, quebra_linha
+		syscall
+		
+		jal print_desl_1bit_direita_segundoInput
+		
+		
+	print_desl_1bit_direita_segundoInput:
+		
+		srl $t2, $t1, 1
+		
+		
+		li $v0, 4
+		la $a0, valor_desl_1bit_direita_segundoInput
+		syscall
+		
+		li $v0, 1
+		move $a0, $t2
+		syscall
+		
+		li $v0, 4
+		la $a0, quebra_linha
+		syscall
+		
+		
+		jal exit
+			
+	exit:
+    		li $v0, 10    
+    		syscall

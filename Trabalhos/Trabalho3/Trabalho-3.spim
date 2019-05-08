@@ -1,0 +1,65 @@
+.data
+	jump: .asciiz "\n"
+	Numberinvalid: .asciiz  "Entrada invalida."
+
+.text
+	main:
+		li $v0, 5 # Ler um inteiro (Input)
+		syscall # Faz Chamada
+		
+		move $t0, $v0 # Passa o valor para o registrador $t0
+		
+		li $t4, 1 # Atribui 1 ao $t4
+		ble $t0, $t4, invalid # Se o $t0 menor ou igual à 1 vai para a label invalid 
+		
+		li $t5, 32768 # Atribui 32768 à $t5 
+		bge $t0, $t5, invalid # Se o $t0 maior ou igual à 32768 vai para a label invalid 
+		
+		li $t1, 2 # Atribui 2 à $t1
+		
+		j analyze # Pula paara a label analyze
+		
+		analyze:
+			ble $t1, $t0, factorial # Se $t1 for menor ou igual à $t0 vai pra label factoria;
+		
+			j exit # Caso contrário vai pra label exit
+		
+		factorial:
+			div $t2, $t0, $t1 # Divide $t0 por $t1 e armazena o resultado em $t2
+			mfhi $t3 # Coloca o resultado da divisão em $t3
+			
+			beq $t3, 0, print # Se o resto for igual a 0 vai pra label print
+			j increment # Caso contrário vai pra label increment
+			
+		print:
+			li $v0, 1 # Atribui o valo 1 para $v0
+			move $a0, $t1 # Passa o valor de $t1 para $a0
+			syscall # Faz a chamada e printa o divisor
+			
+			li $v0, 4 # Atribui o valor 4 à $v0
+			la $a0, jump # Passa a label jump para o $a0
+			syscall # Faz a chamada e printa a string jump
+			
+			j increment # Pula para a label increment
+		
+		increment:
+			addi $t1, $t1, 1 # Soma 1 ao registrador $t1
+			j analyze # Pula para o analyze
+			
+		invalid:
+			li $v0, 4 # Printa a string invalid
+			la $a0, Numberinvalid
+			syscall
+			
+			li $v0, 4 # Printa a string jump
+			la $a0, jump
+			syscall
+			
+			j exit # Pula para a label exit
+		exit:			
+			li $v0,10 # sai
+ 			syscall
+			
+		
+			
+	

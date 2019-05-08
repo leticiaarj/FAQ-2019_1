@@ -1,0 +1,18 @@
+Alunos(as):Letícia Karla Soares Rodrigues de Araújo e Pedro Henrique Queiroz Miranda
+Matrículas: 15/0135939 e 15/0144474
+Professor: Tiago Alves da Fonseca
+Disciplina: Fundamentos de Arquitetura de Computadores
+
+
+Sistema Operacional: Ubuntu 18 - Linux
+
+Ambiente de simulação para arquitetura MIPS: MARS e SPIM.
+
+Intruções de uso: 
+
+	1. Abra o terminal no Ubuntu (ctrl+alt+t)
+	2. Se não tiver o Spin, instale-o $sudo apt install spim
+	3. Rode o trabalho, $spim -f trabalho-1.spim
+
+Limitações: Não há limitações. Faz tudo o que foi requisitado no exercício proposto. 
+

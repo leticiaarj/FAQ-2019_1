@@ -1,0 +1,141 @@
+.data
+	bit: .asciiz "bit"
+	ifen: .asciiz "-"
+	paridade_nome: .asciiz "paridade: "
+	saida: .asciiz "saida: "
+	incorreto: .asciiz "entrada incorreta\n"
+	pula: .asciiz "\n"
+	
+.text
+	main:
+		li $v0, 5 # Ler um inteiro (Input) e adiciona o valor lido na última posição 
+		syscall
+		
+		move $t0, $v0 #variavel que vai se dividir e achar a quantidade de uns
+		
+		#insere o valor 0 no registrador $t1
+		li $t2,0
+		
+		li $t1, 128
+		
+		ble $t1, $t0, invalido
+		
+		li $t1, 0
+		
+		blt $t0, $t1, invalido
+		
+		move $t1, $v0 #variavel que representará o valor da saida
+		j count_1_s
+	
+			
+		count_1_s:
+			div $t0,$t0, 2
+			mfhi $t4
+			beq $t4, 1, incremento
+			blt $t4, 1, test
+		
+		test:
+			blt $t0, 1, paridade
+			j count_1_s
+			
+			
+		incremento:
+			add $t2, $t2, 1
+			blt $t0,1,paridade
+		 	j count_1_s 
+		
+			
+		paridade:
+			div $t2,$t2, 2
+			mfhi $t4
+			beq $t4, 0, par
+			beq $t4, 1, impar
+			
+		par:
+			
+			li $v0,4 
+			la $a0, bit
+			syscall
+			
+			li $v0,4 
+			la $a0, ifen
+			syscall
+			
+			li $v0,4 
+			la $a0, paridade_nome
+			syscall
+			
+			li $s0, 0
+			li $v0, 1
+			move $a0, $s0
+			syscall
+			
+			li $v0, 4
+			la $a0, pula
+			syscall
+			
+			li $v0, 4
+			la $a0, saida
+			syscall
+			
+			li $v0, 1
+			move $a0, $t1
+			syscall
+			
+			li $v0, 4
+			la $a0, pula
+			syscall
+
+			j exit
+			
+		impar:
+			ori $t5, $t1, 128
+			
+			li $v0,4 
+			la $a0, bit
+			syscall
+			
+			li $v0,4 
+			la $a0, ifen
+			syscall
+			
+			li $v0,4 
+			la $a0, paridade_nome
+			syscall
+			
+			li $s0, 1
+			li $v0, 1
+			move $a0, $s0
+			syscall
+			
+			li $v0, 4
+			la $a0, pula
+			syscall
+			
+			li $v0, 4
+			la $a0, saida
+			syscall
+			
+			li $v0, 1
+			move $a0, $t5
+			syscall
+			
+			li $v0, 4
+			la $a0, pula
+			syscall
+			
+			j exit
+			
+		invalido:
+			li $v0,4 
+			la $a0, incorreto
+			syscall
+			
+			
+		exit:			
+			li $v0,10
+ 			syscall
+			
+			
+			
+			
