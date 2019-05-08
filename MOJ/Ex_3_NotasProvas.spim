@@ -1,0 +1,79 @@
+.data
+	pula: .asciiz "\n"
+	A: .asciiz "A"
+	B: .asciiz "B"
+	C: .asciiz "C"
+	D: .asciiz "D"
+	E: .asciiz "E"
+	
+.text
+	main:
+		jal ler #Chama a função ler
+		
+		ler: 
+			li $v0, 5 # Ler um inteiro  
+			syscall
+			move $t0, $v0
+			
+			jal condicao #Chama a condição
+		cond1:
+			li $v0, 4 # Ler String
+			la, $a0, E #Imprime a letra correta
+			syscall 
+			li $v0, 4
+			la, $a0, pula
+			syscall
+			jal exit # Chama o exit
+			
+		cond2:
+			li $v0, 4
+			la, $a0, D
+			syscall 
+			li $v0, 4
+			la, $a0, pula
+			syscall
+			jal exit
+			
+		cond3:
+			li $v0, 4
+			la, $a0, C
+			syscall 
+			li $v0, 4
+			la, $a0, pula
+			syscall
+			jal exit
+			
+		cond4:
+			li $v0, 4
+			la, $a0, B
+			syscall 
+			li $v0, 4
+			la, $a0, pula
+			syscall
+			jal exit
+			
+		cond5:
+			li $v0, 4
+			la, $a0, A
+			syscall 
+			li $v0, 4
+			la, $a0, pula
+			syscall
+			jal exit
+			
+		condicao:	
+			ble $t0, 0, cond1 # Se t0 for menor ou igual a 0 chama a condição 1
+			ble $t0, 35, cond2
+			ble $t0, 60, cond3
+			ble $t0, 85, cond4
+			ble $t0, 100, cond5
+			
+		exit:
+			li $v0, 10 #Exit
+			syscall
+	
+			
+			
+	
+			
+			
