@@ -1,0 +1,116 @@
+.data
+	jump: .asciiz "\n"
+	Numberinvalid: .asciiz  "Entrada invalida."
+
+.text
+	main:
+		li $v0, 5 # Ler um inteiro (Input)
+		syscall # Faz Chamada
+		
+		move $t0, $v0 # Passa o valor para o registrador $t0
+		
+		ble $t0, 1, invalid # Se o $t0 menor ou igual à 1 vai para a label invalid
+		
+		bge $t0, 32768, invalid # Se o $t0 maior ou igual à 32768 vai para a label invalid 
+		
+		li $t1, 2 # Atribui 2 à $t1
+		
+		add $t2, $t0, 0 # uso do registrador t2 como auxiliar para segurar o valor de t0
+		
+		j factorial # Pula paara a label factorial
+		
+		
+	factorial:
+			
+			
+		div $t2, $t0, $t1 # Divide $t0 por $t1 e armazena o resultado em $t2
+			
+		mfhi $t3 # Coloca o resultado da divisão em $t3
+			
+		beq $t2, 1, print_final
+		beq $t3, 0, analyze_parity #Se o resto for igual a 0 vai pra label print
+		j increment #Caso contrário vai pra label increment
+		
+	increment:
+		addi $t1, $t1, 1 # Soma 1 ao registrador $t1
+		div $t4, $t0, $t1
+		mfhi $t5
+			
+		beq $t5, 0, factorial
+						
+		j increment # Pula para o analyze
+			
+	analyze_parity:
+		div $t4, $t1, 2
+		mfhi $t3
+			
+		beq $t3, 0, pass_2_value
+		j print
+		
+	pass_2_value:
+		 li $t1, 2
+		 j print 
+		
+	print:
+			
+		li $v0, 1 # Atribui o valo 1 para $v0
+		move $a0, $t1 # Passa o valor de $t1 para $a0
+		syscall # Faz a chamada e printa o divisor
+			
+		li $v0, 4 # Atribui o valor 4 à $v0
+		la $a0, jump # Passa a label jump para o $a0
+		syscall # Faz a chamada e printa a string jump
+			
+		li $t1, 2
+		add $t0, $t2, 0
+			
+		j factorial # Pula para a label increment
+	
+	print_final:	
+		
+		beq $t0, 3, print_final_for_value3
+		
+		li $v0, 1 # Atribui o valo 1 para $v0
+		move $a0, $t1 # Passa o valor de $t1 para $a0
+		syscall # Faz a chamada e printa o divisor
+			
+		li $v0, 4 # Atribui o valor 4 à $v0
+		la $a0, jump # Passa a label jump para o $a0
+		syscall # Faz a chamada e printa a string jump
+			
+			
+		j exit # Pula para exit
+	
+	print_final_for_value3:
+		
+		li $t1, 3
+		
+		li $v0, 1 # Atribui o valo 1 para $v0
+		move $a0, $t1 # Passa o valor de $t1 para $a0
+		syscall # Faz a chamada e printa o divisor
+			
+		li $v0, 4 # Atribui o valor 4 à $v0
+		la $a0, jump # Passa a label jump para o $a0
+		syscall # Faz a chamada e printa a string jump
+			
+			
+		j exit # Pula para exit
+					
+	invalid:
+		li $v0, 4 # Printa a string invalid
+		la $a0, Numberinvalid
+		syscall
+			
+		li $v0, 4 # Printa a string jump
+		la $a0, jump
+		syscall
+			
+		j exit # Pula para a label exit
+		
+	exit:			
+		li $v0,10 # sai
+ 		syscall
+			
+		
+			
+	
