@@ -1,0 +1,8 @@
+
+.text
+	li $at, 0x55555555
+	sll $v0, $at,0x04
+	
+	or $v1, $at, $v0 
+	and $a0, $at, $v0 
+	xor $a1, $at, $v0 

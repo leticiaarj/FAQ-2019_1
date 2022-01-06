@@ -1,0 +1,43 @@
+.data
+	buffer: .space 20
+        str2:  .asciiz "VOCE ESCREVEU:\n"
+	
+.text
+.globl main 
+	main:
+		j tamanho
+		
+		tamanho:
+			# Lendo o tamanho
+			li $v0, 5 # Ler um inteiro - Input  
+			syscall
+			move $t1, $v0
+			
+			j input
+			
+		input:
+			# Lendo a primeira String
+         		li $v0,8 # Ler uma String
+         		la $a0, buffer # Carrega o espaço no endereço
+         		li $a1, 20 # Aloca o espaço em byte para a String
+         		move $t0,$a0 # Salva a String em $t0
+         		syscall
+         		#la $a0, buffer #reload byte space to primary address
+         		#move $a0,$t0 # primary address = t0 address (load pointer)
+         		#li $v0,4 # print string
+         		#syscall
+         	
+			#Lendo a segunda String
+         		li $v0,8 # Ler uma String
+         		la $a0, buffer #Carrega o espaço no endereço
+         		li $a1, 20 # Aloca o espaço em byte para a String
+         		move $t1,$a0 # Salva a String em $t1
+         		syscall
+         	
+         		j exit
+	
+		exit:
+         		li $v0,10 #end program
+         		syscall
+   
+    			

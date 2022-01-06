@@ -1,0 +1,9 @@
+.text
+	ori $at, $zero, 0x01
+	ori $v0, $zero, 0x02
+	ori $v1, $zero, 0x03
+	ori $a0, $zero, 0x04
+	ori $a1, $zero, 0x05
+	ori $a2, $zero, 0x06
+	ori $a3, $zero, 0x07
+	

@@ -1,0 +1,21 @@
+.data
+	entrada: .space 80
+.text
+	main:
+		li $v0 8
+	
+		la $a0, entrada
+		#str[0]
+		li $a1, 80
+		syscall
+		
+		la $t0, entrada
+		li $s7, 0
+		sll $t8, $s7, 1
+		add $t8, $t8, $t0
+		addiu $s7, $s7, 1
+		lw $t1, 0($t8)
+		sll $t2, $t1, 8
+		srl $t2, $t2, 8
+		
+		
